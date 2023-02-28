@@ -5,11 +5,18 @@ export const added = (todoText) => {
         type: ADDED,
         payload:todoText
     }
-}
+}   
 
 export const allCompleted = () => {
     return {
         type: ALLCOMPLETED
+    }
+}
+
+
+export const clearCompleted = () => {
+    return {
+        type: CLEARCOMPLETED
     }
 }
 
@@ -34,11 +41,5 @@ export const toggled = (todoId) => {
     return {
         type: TOGGLED,
         payload:todoId
-    }
-}
-
-export const clearCompleted = () => {
-    return {
-        type: CLEARCOMPLETED
     }
 }

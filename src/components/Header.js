@@ -1,43 +1,64 @@
-import React from 'react'
-import TickImg from '../assets/images/double-tick.png'
-import NoteImg from '../assets/images/notes.png'
-import PlusImg from '../assets/images/plus.png'
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import tickImage from "../assets/images/double-tick.png";
+import noteImage from "../assets/images/notes.png";
+import plusImage from "../assets/images/plus.png";
+import { added, allCompleted, clearCompleted } from "../redux/todos/actions";
 
-const Header = () => {
-  return (
-    <div>
-        <form
-            className="flex items-center bg-gray-100 px-4 py-4 rounded-md"
-        >
-            <img
-                src={NoteImg}
-                className="w-6 h-6"
-                alt="Add todo"
-            />
-            <input
-                type="text"
-                placeholder="Type your todo"
-                className="w-full text-lg px-4 py-1 border-none outline-none bg-gray-100 text-gray-500"
-            />
-            <button
-                type="submit"
-                className={`appearance-none w-8 h-8 bg-[url(${PlusImg})] bg-no-repeat bg-contain`}
-            ></button>
-        </form>
+export default function Header() {
+    const dispatch = useDispatch();
+    const [input, setInput] = useState("");
 
-        <ul className="flex justify-between my-4 text-xs text-gray-500">
-            <li className="flex space-x-1 cursor-pointer">
-                <img
-                    className="w-4 h-4"
-                    src={TickImg}
-                    alt="Complete"
+    const handleInput = (e) => {
+        setInput(e.target.value);
+    };
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+        dispatch(added(input));
+        setInput("");
+    };
+
+    const completeHadler = () => {
+        dispatch(allCompleted());
+    };
+
+    const clearHeandler = () => {
+        dispatch(clearCompleted());
+    };
+
+    return (
+        <div>
+            <form
+                className="flex items-center bg-gray-100 px-4 py-4 rounded-md"
+                onSubmit={submitHandler}
+            >
+                <img src={noteImage} className="w-6 h-6" alt="Add todo" />
+                <input
+                    type="text"
+                    placeholder="Type your todo"
+                    className="w-full text-lg px-4 py-1 border-none outline-none bg-gray-100 text-gray-500"
+                    value={input}
+                    onChange={handleInput}
                 />
-                <span>Complete All Tasks</span>
-            </li>
-            <li className="cursor-pointer">Clear completed</li>
-        </ul>
-</div>
-  )
-}
+                <button
+                    type="submit"
+                    className={`appearance-none w-8 h-8 bg-[url('${plusImage}')] bg-no-repeat bg-contain`}
+                ></button>
+            </form>
 
-export default Header
+            <ul className="flex justify-between my-4 text-xs text-gray-500">
+                <li
+                    className="flex space-x-1 cursor-pointer"
+                    onClick={completeHadler}
+                >
+                    <img className="w-4 h-4" src={tickImage} alt="Complete" />
+                    <span>Complete All Tasks</span>
+                </li>
+                <li className="cursor-pointer" onClick={clearHeandler}>
+                    Clear completed
+                </li>
+            </ul>
+        </div>
+    );
+}
